@@ -6,7 +6,11 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-const encryptionKey = process.env.ENCRYPTION_KEY;
+const encryptionKey = crypto
+  .createHash("sha256")
+  .update(String(process.env.ENCRYPTION_KEY))
+  .digest("base64")
+  .slice(0, 32);
 
 function decrypt(text) {
   const [ivHex, encryptedHex] = text.split(":");
@@ -87,7 +91,7 @@ app.get("/registration-verification/:id", async (req, res) => {
                 </head>
                 <body>
                     <div class="container">
-                        <h1>${name} telah terdaftar sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ</h1>
+                        <h1>${name} telah terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ</h1>
                     </div>
                 </body>
             </html>
@@ -115,7 +119,7 @@ app.get("/registration-verification/:id", async (req, res) => {
                 </head>
                 <body>
                     <div class="container">
-                        <h1>Peserta ${name} belum terdaftar sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ</h1>
+                        <h1>Peserta ${name} belum terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ</h1>
                     </div>
                 </body>
             </html>
