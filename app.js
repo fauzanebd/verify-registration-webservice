@@ -119,11 +119,11 @@ app.get("/registration-verification/:id", async (req, res) => {
     </div>
     <script>
         const isRegistered = ${isRegistered};
-        const name = "${name}";
+        const name = "${name.replace(/"/g, '\\"')}";
 
         document.getElementById('message').textContent = isRegistered
-            ? `${name} telah terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ`
-            : `Peserta ${name} belum terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ`;
+            ? name + " telah terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ"
+            : "Peserta " + name + " belum terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ";
 
         document.getElementById('gradientBg').style.background = isRegistered
             ? 'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)'
