@@ -67,63 +67,71 @@ app.get("/registration-verification/:id", async (req, res) => {
 
     const isRegistered = await checkRegistration(name, address, phoneNumber);
 
-    const htmlResponse = isRegistered
-      ? `
-            <html>
-                <head>
-                    <style>
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            display: flex; 
-                            justify-content: center; 
-                            align-items: center; 
-                            height: 100vh; 
-                            margin: 0; 
-                            background: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
-                        }
-                        .container { 
-                            text-align: center; 
-                            padding: 20px; 
-                            border-radius: 10px; 
-                            background-color: rgba(255,255,255,0.8);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>${name} telah terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ</h1>
-                    </div>
-                </body>
-            </html>
-            `
-      : `
-            <html>
-                <head>
-                    <style>
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            display: flex; 
-                            justify-content: center; 
-                            align-items: center; 
-                            height: 100vh; 
-                            margin: 0; 
-                            background: linear-gradient(120deg, #ff9a9e 0%, #fecfef 100%);
-                        }
-                        .container { 
-                            text-align: center; 
-                            padding: 20px; 
-                            border-radius: 10px; 
-                            background-color: rgba(255,255,255,0.8);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>Peserta ${name} belum terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ</h1>
-                    </div>
-                </body>
-            </html>
-            `;
+    const htmlResponse = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .container { 
+            text-align: center; 
+            padding: 20px; 
+            border-radius: 10px; 
+            background-color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            width: 100%;
+            margin: 0 20px;
+        }
+        h1 {
+            font-size: 24px;
+            line-height: 1.4;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg" id="gradientBg"></div>
+    <div class="container">
+        <h1 id="message"></h1>
+    </div>
+    <script>
+        const isRegistered = ${isRegistered};
+        const name = "${name}";
+
+        document.getElementById('message').textContent = isRegistered
+            ? `${name} telah terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ`
+            : `Peserta ${name} belum terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ`;
+
+        document.getElementById('gradientBg').style.background = isRegistered
+            ? 'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)'
+            : 'linear-gradient(120deg, #ff9a9e 0%, #fecfef 100%)';
+    </script>
+</body>
+</html>
+    `;
 
     res.send(htmlResponse);
   } catch (error) {
