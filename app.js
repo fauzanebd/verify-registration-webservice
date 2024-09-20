@@ -119,7 +119,7 @@ app.get("/registration-verification/:id", async (req, res) => {
     </div>
     <script>
         const isRegistered = ${isRegistered};
-        const name = "${name.replace(/"/g, '\\"')}";
+        const name = "${name.replace(/"/g, '\\"').replace("\n", " ")}";
 
         document.getElementById('message').textContent = isRegistered
             ? name + " telah terverifikasi sebagai peserta nobar Kelahiran Nabi Muhammad ﷺ"
